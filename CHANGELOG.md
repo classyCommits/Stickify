@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.0] - 2025-03-22
+
+### Fixed
+- Delete button now correctly responds to clicks on its SVG child icon
+- Sanitization applied at render time — closes stored XSS vector
+- `javascript:` protocol URLs blocked in link modal
+- `manifest.json`: added missing `storage` permission
+
+### Changed
+- Fluid layout for side panel (responsive width and height)
+- Formatting toolbar hides when no notes exist
+
+### Refactored
+- Extracted `getFilteredNotes()` helper, removed duplicated filter logic
+
+---
+
 ## [1.1.1] - 2025-06-01
 
 ### Added

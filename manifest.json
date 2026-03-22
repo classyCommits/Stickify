@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Stickify",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "description": "A beautiful, simple, and feature-rich sticky notes companion for your browser...",
     "permissions": [
       "sidePanel",
