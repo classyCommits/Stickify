@@ -12,14 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
-    // Note colors
-    const colors = {
-        yellow: 'yellow',
-        pink: 'pink',
-        blue: 'blue',
-        green: 'green',
-    };
-
     // DOM elements
     const notesContainer = document.getElementById('notesContainer');
     const addNoteBtn = document.getElementById('addNote');
@@ -65,7 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     noteElement.classList.add(color);
     noteElement.dataset.id = noteData.id || Date.now().toString();
-    noteContent.innerHTML = noteData.content || '';
+     // Sanitize on render to prevent stored XSS from any pre-existing localStorage data
+    noteContent.innerHTML = DOMPurify.sanitize(noteData.content || '', {
+        ALLOWED_TAGS: ['h1', 'h2', 'b', 'i', 'u', 'a', 'img', 'div', 'br', 'p'],
+        ALLOWED_ATTR: ['href', 'target', 'src', 'alt']
+    });
     tagsInput.value = noteData.tags || '';
 
     const activeColorElement = noteElement.querySelector(`.color-option[data-color="${color}"]`);
@@ -90,6 +86,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 return new Date(b.dateModified || b.dateCreated || b.id) - new Date(a.dateModified || a.dateCreated || a.id);
             }
         });
+    }
+    
+    // Migrate existing notes to include dates
+    function migrateNotes() {
+        let migrated = false;
+        notes = notes.map(note => {
+            if (!note.dateCreated) {
+                const date = new Date(parseInt(note.id) || Date.now()).toISOString();
+                note.dateCreated = date;
+                note.dateModified = date;
+                migrated = true;
+            }
+            if (typeof note.tags === 'undefined') { 
+                note.tags = '';
+                migrated = true;
+            }
+            return note;
+        });
+        if (migrated) {
+            saveNotes();
+        }
     }
 
     // Function to render all notes
@@ -263,7 +280,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 1. Validation
         try {
-            new URL(url); // Throws error if format is invalid
+            const parsed = new URL(url);
+            if (!['http:', 'https:'].includes(parsed.protocol)) {
+                modalError.textContent = 'Only http:// and https:// URLs are allowed.';
+                return;
+            }
             modalError.textContent = '';
         } catch (_) {
             modalError.textContent = 'Please enter a valid URL format.';
@@ -446,7 +467,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         // Logic for deleting the note
-        if (e.target.classList.contains('delete-btn')) {
+        // Use closest() so clicks on the SVG child element inside the button are also caught
+        if (e.target.closest('.delete-btn')) {
             deleteNote(noteId);
             return;
         }
@@ -467,26 +489,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Migrate existing notes to include dates
-    function migrateNotes() {
-        let migrated = false;
-        notes = notes.map(note => {
-            if (!note.dateCreated) {
-                const date = new Date(parseInt(note.id) || Date.now()).toISOString();
-                note.dateCreated = date;
-                note.dateModified = date;
-                migrated = true;
-            }
-            if (typeof note.tags === 'undefined') { 
-                note.tags = '';
-                migrated = true;
-            }
-            return note;
-        });
-        if (migrated) {
-            saveNotes();
-        }
-    }
+    
 
     // Initialize
     migrateNotes();
