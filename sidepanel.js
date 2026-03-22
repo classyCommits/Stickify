@@ -112,13 +112,17 @@ document.addEventListener('DOMContentLoaded', () => {
         let notesToRender = filteredNotes || notes;
         notesToRender = sortNotes(notesToRender);
 
+        const toolbar = document.querySelector('.toolbar');
+
         if (notesToRender.length === 0) {
             emptyState.style.display = 'block';
             notesContainer.innerHTML = '';
             notesContainer.appendChild(emptyState);
+            if (toolbar) toolbar.classList.add('toolbar--hidden');
             return;
         }
 
+        if (toolbar) toolbar.classList.remove('toolbar--hidden');
         emptyState.style.display = 'none';
         notesContainer.innerHTML = '';
         notesToRender.forEach(noteData => {
