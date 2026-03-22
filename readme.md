@@ -1,12 +1,12 @@
 # Stickify 
-
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/v/ifikckciegdojkmgkcbfapikbnhebnio)](https://chrome.google.com/webstore/detail/ifikckciegdojkmgkcbfapikbnhebnio)
 [](https://developer.chrome.com/docs/extensions/mv3/intro/)
 [](https://opensource.org/licenses/MIT)
 [](https://www.javascript.com)
 
 A beautiful, simple, and feature-rich sticky notes companion for your browser. Built with security and privacy in mind, Stickify lives in your browser's side panel, ready to capture your thoughts on any webpage without getting in the way.
 
-![alt text](<docs/stickifybanner (1).png>)
+![Stickify Banner](docs/stickify-banner.png)
 
 -----
 
@@ -22,15 +22,15 @@ A beautiful, simple, and feature-rich sticky notes companion for your browser. B
 
 ##  Screenshots
 
-![alt text](docs/Stickify1.png)
+![Notes panel with color coding](docs/Stickify1.png)
 
-![alt text](docs/Stickify2.png)
+![add direct link](docs/Stickify2.png)
 
-![alt text](docs/Stickify3.png)
+![notes sorting](docs/Stickify3.png)
 
-![alt text](docs/Stickify4.png)
+![tag filtering](docs/Stickify4.png)
 
-![alt text](docs/Stickify5.png)
+![link window](docs/Stickify5.png)
 
 
 
