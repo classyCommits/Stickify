@@ -40,9 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let notes = JSON.parse(localStorage.getItem('stickyNotes')) || [];
     let currentSortBy = 'dateCreated';
 
-    // Function to create a new note
     // Function to create a new note using the HTML template
-        // Function to create a new note using the HTML template
    function createNote(noteData = {}) {
     const template = document.getElementById('note-template');
     if (!template) return null;
@@ -150,6 +148,17 @@ document.addEventListener('DOMContentLoaded', () => {
             newNoteElement.focus();
         }
     }
+    
+    // Helper: returns the currently active search-filtered notes list
+    function getFilteredNotes() {
+        const query = searchInput.value.toLowerCase().trim();
+        if (!query) return notes;
+        return notes.filter(note => {
+            const contentMatch = note.content.toLowerCase().includes(query);
+            const tagsMatch = note.tags && note.tags.toLowerCase().includes(query);
+            return contentMatch || tagsMatch;
+        });
+    }
 
     // Function to update a note
     function updateNote(id, content) {
@@ -164,7 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
             notes[noteIndex].dateModified = new Date().toISOString();
             saveNotes();
             if (currentSortBy === 'dateModified') {
-                renderNotes(notes.filter(note => searchInput.value ? (note.content.toLowerCase().includes(searchInput.value.toLowerCase()) || (note.tags && note.tags.toLowerCase().includes(searchInput.value.toLowerCase()))) : true));
+                renderNotes(getFilteredNotes());
             }
         }
     }
@@ -181,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
             notes[noteIndex].dateModified = new Date().toISOString();
             saveNotes();
             if (currentSortBy === 'dateModified') {
-                renderNotes(notes.filter(note => searchInput.value ? (note.content.toLowerCase().includes(searchInput.value.toLowerCase()) || (note.tags && note.tags.toLowerCase().includes(searchInput.value.toLowerCase()))) : true));
+                renderNotes(getFilteredNotes());
             } else {
                 // If not sorting by modified date, just update the color in the DOM directly for better performance.
                 const noteElement = notesContainer.querySelector(`[data-id='${id}']`);
@@ -382,19 +391,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Search notes
     function searchNotes(query) {
-        if (!query.trim()) {
-            renderNotes();
-            return;
-        }
-
-       const filteredNotes = notes.filter(note => {
-        const queryLower = query.toLowerCase();
-        const contentMatch = note.content.toLowerCase().includes(queryLower);
-        const tagsMatch = note.tags && note.tags.toLowerCase().includes(queryLower);
-        return contentMatch || tagsMatch;
-    });
-
-        renderNotes(filteredNotes);
+        renderNotes(query.trim() ? getFilteredNotes() : notes);
     }
 
     // Add new note
