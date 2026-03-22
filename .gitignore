@@ -1,6 +1,20 @@
-# Packaged extension file
-stickify.zip
-
-# System files
+# OS files
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Zip artifacts (don't commit the packaged extension)
+*.zip
+*.crx
+
+# Node (if any tooling is added later)
+node_modules/
