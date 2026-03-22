@@ -1,11 +1,11 @@
 {
     "manifest_version": 3,
     "name": "Stickify",
-    "version": "1.0",
+    "version": "1.1",
     "description": "A beautiful, simple, and feature-rich sticky notes companion for your browser...",
     "permissions": [
-      "sidePanel",
-      "storage"
+      "sidePanel"
+      
     ],
     "side_panel": {
       "default_path": "sidepanel.html"
